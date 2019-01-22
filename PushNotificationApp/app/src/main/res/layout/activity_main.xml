@@ -1,9 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="sendButton"
+        android:text="@string/send_notification_string"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:rowCount="2"
+        app:layout_constraintBottom_toTopOf="@+id/send_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <android.support.v7.widget.GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:columnCount="2"
+            app:columnOrderPreserved="false"
+            app:layout_gravity="center"
+            app:orientation="horizontal"
+            app:rowCount="2">
+
+            <TextView
+                android:id="@+id/title_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/notification_title_string"
+                android:textColor="#000000"
+                app:layout_column="0"
+                app:layout_gravity="fill|center"
+                app:layout_row="0" />
+
+            <EditText
+                android:id="@+id/title_plain_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:hint="@string/title_string"
+                android:inputType="textPersonName"
+                app:layout_column="1"
+                app:layout_gravity="fill|center"
+                app:layout_row="0" />
+
+            <TextView
+                android:id="@+id/content_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/notification_content_string"
+                android:textColor="#000000"
+                app:layout_column="0"
+                app:layout_gravity="fill|center"
+                app:layout_row="1" />
+
+            <EditText
+                android:id="@+id/content_plain_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:hint="@string/content_string"
+                android:inputType="textPersonName"
+                android:paddingLeft="5dp"
+                app:layout_column="1"
+                app:layout_gravity="fill|center"
+                app:layout_row="1" />
+
+        </android.support.v7.widget.GridLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/enter_name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_your_name_string"
+            android:textAlignment="center"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/name_plain_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:hint="@string/name_string"
+            android:inputType="textPersonName"
+            android:textAlignment="center" />
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

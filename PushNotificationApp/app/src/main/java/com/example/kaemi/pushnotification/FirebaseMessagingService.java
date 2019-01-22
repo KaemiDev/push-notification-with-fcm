@@ -3,17 +3,11 @@ package com.example.kaemi.pushnotification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONObject;
@@ -24,28 +18,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     @Override
     public void onNewToken(String s) {
-        FirebaseInstanceId.getInstance().getInstanceId()
-            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                @Override
-                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                    if (!task.isSuccessful()) {
-                        //To do//
-                        return;
-                    }
 
-                    // Get the Instance ID token//
-                    String token = task.getResult().getToken();
-                    Log.d("Token: ", token);
-
-                    // Save the token on device
-                    SharedPreferences mSettings = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = mSettings.edit();
-                    editor.remove("Token");
-                    editor.putString("Token", token);
-                    editor.apply();
-
-                }
-            });
+        Log.i("Tokenenene: ",  s);
 
     }
 

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PushNotification</string>
+    <string name="send_notification_string">Send Notification</string>
+    <string name="notification_title_string">Notification Title</string>
+    <string name="title_string">Title</string>
+    <string name="notification_content_string">Notification Content</string>
+    <string name="content_string">Content</string>
+    <string name="enter_your_name_string">Enter your name</string>
+    <string name="name_string">Name</string>
 </resources>
