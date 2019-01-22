@@ -1,4 +1,0 @@
-#Tue Jan 22 09:26:41 BRST 2019
-base.0=C\:\\Users\\engenharia1\\Documents\\Devs\\Push Notification\\PushNotificationApp\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\1
-path.0=classes.dex
-renamed.0=classes.dex
