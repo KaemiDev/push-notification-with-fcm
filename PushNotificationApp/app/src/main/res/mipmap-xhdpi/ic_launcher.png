@@ -1,0 +1,133 @@
+package com.example.upx.myapplication;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class BalancasActivity extends AppCompatActivity {
+
+    DatabaseReference mDatabaseReference;
+
+    int childCounter = 0;
+
+    ListView mListView;
+
+    ArrayList<String> nomes;
+    ArrayList<String> status;
+    ArrayList<String> atualizados;
+    ArrayList<String> modelo;
+    ArrayList<String> versao;
+    ArrayList<String> porta;
+
+    String[] nomesArray;
+    String[] statusArray;
+    String[] atualizadosArray;
+    String[] modeloArray;
+    String[] portaArray;
+    String[] versaoArray;
+
+    private int i = 0;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_status);
+
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setTitle(R.string.balancas_name);
+
+        mListView = findViewById(R.id.status_list);
+
+        nomes = new ArrayList<>();
+        status = new ArrayList<>();
+        atualizados = new ArrayList<>();
+        modelo = new ArrayList<>();
+        versao = new ArrayList<>();
+        porta = new ArrayList<>();
+
+        final String path = getIntent().getExtras().getString("PATH");
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("CNPJ");
+
+        DatabaseReference db = mDatabaseReference.getRoot().child(path);
+
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                childCounter++;
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                    if (child.getKey().equals("Atualizados")) {
+
+                        atualizados.add(child.getValue().toString());
+
+                    } else if (child.getKey().equals("Modelo")) {
+
+                        modelo.add(child.getValue().toString());
+
+                    } else if (child.getKey().equals("Porta")) {
+
+                        porta.add(child.getValue().toString());
+
+                    } else if (child.getKey().equals("Versao")) {
+
+                        versao.add(child.getValue().toString());
+
+                    } else if (child.getKey().equals("Status")) {
+
+                        status.add(child.getValue().toString());
+
+                    }
+
+                }
+
+                if(dataSnapshot.getKey().length() > 10) {
+
+                    nomes.add(dataSnapshot.getKey().substring(0,10));
+
+                } else {
+
+                    nomes.add(dataSnapshot.getKey());
+
+                }
+
+                nomesArray = nomes.toArray(new String[childCounter]);
+                statusArray = status.toArray(new String[childCounter]);
+                atualizadosArray = atualizados.toArray(new String[childCounter]);
+                modeloArray = modelo.toArray(new String[childCounter]);
+                portaArray = porta.toArray(new String[childCounter]);
+                versaoArray = versao.toArray(new String[childCounter]);
+
+                /*
+                    ISSO ACONTECE TODAS AS VEZES PORQUE NAO ACHEI UMA FORMA DE SÓ ACONTECER NA ÚLTIMA
+                    QUANDO OS DATASNAPSHOTS "ACABARAM"
+                */
+
+                for (int j = 0; j < childCounter; j++) {
+                    mListView.setAdapter(null);
+                    Log.i("ATUATUA", atualizadosArray[j] + " " + modeloArray[j] + " " + portaArray[j] + " " + versaoArray[j]);
+              

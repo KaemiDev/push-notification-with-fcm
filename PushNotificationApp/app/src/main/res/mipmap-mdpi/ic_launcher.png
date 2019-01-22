@@ -1,0 +1,41 @@
+<application>
+  <component name="ActionsCollector">
+    <counts>
+      <entry action="$Copy" count="5" />
+      <entry action="$Delete" count="22" />
+      <entry action="$Paste" count="11" />
+      <entry action="$SelectAll" count="35" />
+      <entry action="$Undo" count="1897" />
+      <entry action="Android.AnalyzeApk" count="2" />
+      <entry action="Android.BuildApk" count="1" />
+      <entry action="Android.CreateResourceDirectory" count="2" />
+      <entry action="Android.GenerateSignedApk" count="10" />
+      <entry action="CleanGradleProject" count="21" />
+      <entry action="CloseContent" count="1" />
+      <entry action="CloseProject" count="11" />
+      <entry action="CodeCompletion" count="6" />
+      <entry action="CopyAsPlainText" count="1" />
+      <entry action="CopyReference" count="1" />
+      <entry action="DeveloperServices.Firebase" count="5" />
+      <entry action="DialogCancelAction Escape" count="1" />
+      <entry action="DialogOkAction Enter" count="50" />
+      <entry action="EditorBackSpace" count="8306" />
+      <entry action="EditorChooseLookupItem" count="2138" />
+      <entry action="EditorChooseLookupItemReplace" count="82" />
+      <entry action="EditorCopy" count="673" />
+      <entry action="EditorCut" count="126" />
+      <entry action="EditorDelete" count="38" />
+      <entry action="EditorDeleteLine" count="3" />
+      <entry action="EditorDown" count="1043" />
+      <entry action="EditorDownWithSelection" count="7" />
+      <entry action="EditorEnter" count="2518" />
+      <entry action="EditorEscape" count="3" />
+      <entry action="EditorIndentSelection" count="12" />
+      <entry action="EditorLeft" count="929" />
+      <entry action="EditorLeftWithSelection" count="53" />
+      <entry action="EditorLineEnd" count="12" />
+      <entry action="EditorLineEndWithSelection" count="1" />
+      <entry action="EditorLineStart" count="10" />
+      <entry action="EditorNextWordWithSelection" count="1" />
+      <entry action="EditorPageDown" count="4" />
+      <entry action="EditorPageUp

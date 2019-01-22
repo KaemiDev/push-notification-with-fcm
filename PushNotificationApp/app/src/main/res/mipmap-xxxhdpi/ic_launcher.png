@@ -1,0 +1,285 @@
+package com.example.upx.myapplication;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class BalancasActivity extends AppCompatActivity {
+
+    DatabaseReference mDatabaseReference;
+
+    int childCounter = 0;
+
+    ListView mListView;
+
+    ArrayList<String> nomes;
+    ArrayList<String> status;
+    ArrayList<String> atualizados;
+    ArrayList<String> modelo;
+    ArrayList<String> versao;
+    ArrayList<String> porta;
+
+    String[] nomesArray;
+    String[] statusArray;
+    String[] atualizadosArray;
+    String[] modeloArray;
+    String[] portaArray;
+    String[] versaoArray;
+
+    private int i = 0;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_status);
+
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setTitle(R.string.balancas_name);
+
+        mListView = findViewById(R.id.status_list);
+
+        nomes = new ArrayList<>();
+        status = new ArrayList<>();
+        atualizados = new ArrayList<>();
+        modelo = new ArrayList<>();
+        versao = new ArrayList<>();
+        porta = new ArrayList<>();
+
+        final String path = getIntent().getExtras().getString("PATH");
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("CNPJ");
+
+        DatabaseReference db = mDatabaseReference.getRoot().child(path);
+
+        db.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                childCounter++;
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                    if (child.getKey().equals("Atualizados")) {
+
+                        atualizados.add(child.getValue().toString());
+
+                    } else if (child.getKey().equals("Modelo")) {
+
+                        modelo.add(child.getValue().toString());
+
+                    } else if (child.getKey().equals("Porta")) {
+
+                        porta.add(child.getValue().toString());
+
+                    } else if (child.getKey().equals("Versao")) {
+
+                        versao.add(child.getValue().toString());
+
+                    } else if (child.getKey().equals("Status")) {
+
+                        status.add(child.getValue().toString());
+
+                    }
+
+                }
+
+                if(dataSnapshot.getKey().length() > 10) {
+
+                    nomes.add(dataSnapshot.getKey().substring(0,10));
+
+                } else {
+
+                    nomes.add(dataSnapshot.getKey());
+
+                }
+
+                nomesArray = nomes.toArray(new String[childCounter]);
+                statusArray = status.toArray(new String[childCounter]);
+                atualizadosArray = atualizados.toArray(new String[childCounter]);
+                modeloArray = modelo.toArray(new String[childCounter]);
+                portaArray = porta.toArray(new String[childCounter]);
+                versaoArray = versao.toArray(new String[childCounter]);
+
+                /*
+                    ISSO ACONTECE TODAS AS VEZES PORQUE NAO ACHEI UMA FORMA DE SÓ ACONTECER NA ÚLTIMA
+                    QUANDO OS DATASNAPSHOTS "ACABARAM"
+                */
+
+                for (int j = 0; j < childCounter; j++) {
+                    mListView.setAdapter(null);
+                    Log.i("ATUATUA", atualizadosArray[j] + " " + modeloArray[j] + " " + portaArray[j] + " " + versaoArray[j]);
+                    BalancaAdapter adapter = new BalancaAdapter(BalancasActivity.this, nomesArray, statusArray, atualizadosArray, modeloArray, portaArray, versaoArray);
+                    mListView.setAdapter(adapter);
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                BalancasActivity.this.finish();
+
+                Toast.makeText(BalancasActivity.this, dataSnapshot.getKey() + " modificada.", Toast.LENGTH_SHORT).show();
+
+                startActivity(getIntent());
+
+                BalancasActivity.this.finish();
+            }
+
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    atualizados.remove(child.getValue().toString());
+                    modelo.remove(child.getValue().toString());
+                    porta.remove(child.getValue().toString());
+                    versao.remove(child.getValue().toString());
+                    status.remove(child.getValue().toString());
+                }
+
+                if(dataSnapshot.getKey().length() > 10) {
+
+                    nomes.remove(dataSnapshot.getKey().substring(0,10));
+
+                } else {
+
+                    nomes.remove(dataSnapshot.getKey());
+
+                }
+
+                nomesArray = nomes.toArray(new String[0]);
+                statusArray = status.toArray(new String[0]);
+                atualizadosArray = atualizados.toArray(new String[0]);
+                modeloArray = modelo.toArray(new String[0]);
+                portaArray = porta.toArray(new String[0]);
+                versaoArray = versao.toArray(new String[0   ]);
+
+                /*
+                    ISSO ACONTECE TODAS AS VEZES PORQUE NAO ACHEI UMA FORMA DE SÓ ACONTECER NA ÚLTIMA
+                    QUANDO OS DATASNAPSHOTS "ACABARAM"
+                */
+
+                BalancaAdapter adapter = new BalancaAdapter(BalancasActivity.this, nomesArray, statusArray, atualizadosArray, modeloArray, portaArray, versaoArray);
+
+                mListView.setAdapter(adapter);
+            }
+
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.trocar_cnpj_item:
+
+                mudarCnpjAction();
+
+                return true;
+
+            case R.id.sair_item:
+
+                sairAction();
+
+                return true;
+
+            default:
+
+                return false;
+
+        }
+
+    }
+
+    private void voltarLojas() {
+
+        Intent lojasIntent = new Intent(this, LojasActivity.class);
+
+        startActivity(lojasIntent);
+
+        finish();
+
+    }
+
+    private void mudarCnpjAction() {
+
+        SharedPreferences mSettings = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = mSettings.edit();
+
+        editor.remove("LOGADO CNPJ");
+
+        editor.apply();
+
+        Intent cnpjIntent = new Intent(this, CnpjActivity.class);
+
+        startActivity(cnpjIntent);
+
+        finish();
+
+    }
+
+    public void sairAction() {
+
+        SharedPreferences mSettings = getApplicationContext().getSharedPreferences("Settings", MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = mSettings.edit();
+
+        editor.remove("LOGADO CNPJ");
+
+        editor.apply();
+
+        Intent mainIntent = new Intent(this, MainActivity.class);
+
+        startActivity(mainIntent);
+
+        FirebaseAuth.getInstance().signOut();
+
+        finish();
+
+    }
+
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
